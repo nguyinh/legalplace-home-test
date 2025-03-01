@@ -4,6 +4,28 @@ export class Drug {
     this.expiresIn = expiresIn;
     this.benefit = benefit;
   }
+
+  hasNoMoreBenefit() {
+    return this.benefit <= 0;
+  }
+
+  hasMaximumBenefit() {
+    return this.benefit >= 50;
+  }
+
+  increaseBenefit() {
+    if (this.hasMaximumBenefit()) {
+      return;
+    }
+    this.benefit += 1;
+  }
+
+  decreaseBenefit() {
+    if (this.hasNoMoreBenefit()) {
+      return;
+    }
+    this.benefit -= 1;
+  }
 }
 
 export class Pharmacy {
