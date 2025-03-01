@@ -13,7 +13,6 @@ describe("Output file", () => {
   it("content should not be modified", () => {
     const log = [];
 
-    for (let elapsedDays = 0; elapsedDays < 30; elapsedDays++) {
       const drugs = [
         new Drug("Doliprane", 20, 30),
         new Drug("Herbal Tea", 10, 5),
@@ -44,14 +43,16 @@ describe("Output file", () => {
     const orginalOutputRaw = fs.readFileSync('original-output.json', 'utf-8');
     const currentOutputRaw = fs.readFileSync('test-output.json', 'utf-8');
 
-    const orginalOutput = JSON.parse(orginalOutputRaw).result;
+    const originalOutput = JSON.parse(orginalOutputRaw).result;
     const currentOutput = JSON.parse(currentOutputRaw).result;
 
-    orginalOutput.forEach((originalRow, index) => {
-      console.log(originalRow)
-      expect(originalRow.name).toEqual(currentOutput[index].name);
-      expect(originalRow.benefit).toEqual(currentOutput[index].benefit);
-      expect(originalRow.expiresIn).toEqual(currentOutput[index].expiresIn);
+    originalOutput.forEach((drugs, index) => {
+      drugs.forEach((drug) => {
+        const matchingOriginalDrug = currentOutput[index].find((originalDrug) => originalDrug.name === drug.name);
+        expect(drug.name).toEqual(matchingOriginalDrug.name);
+        expect(drug.benefit).toEqual(matchingOriginalDrug.benefit);
+        expect(drug.expiresIn).toEqual(matchingOriginalDrug.expiresIn);
+      })
     })
   });
 });
