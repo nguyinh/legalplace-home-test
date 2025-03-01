@@ -21,6 +21,8 @@ describe("Output file", () => {
         new Drug("Magic Pill", 15, 40),
       ];
       const pharmacy = new Pharmacy(drugs);
+
+    for (let elapsedDays = 0; elapsedDays < 30; elapsedDays++) {
       log.push(JSON.parse(JSON.stringify(pharmacy.updateBenefitValue())));
     }
 
