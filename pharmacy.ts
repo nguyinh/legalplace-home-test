@@ -1,19 +1,19 @@
 export class Drug {
   constructor(
-    private name: string,
-    private expiresIn: number,
-    private benefit: number
+    public expiresIn: number,
+    public benefit: number,
+    public name?: string
   ) {}
 
-  private hasNoMoreBenefit(): boolean {
+  protected hasNoMoreBenefit(): boolean {
     return this.benefit <= 0;
   }
 
-  private hasMaximumBenefit(): boolean {
+  protected hasMaximumBenefit(): boolean {
     return this.benefit >= 50;
   }
 
-  private increaseBenefit(): Drug {
+  protected increaseBenefit(): Drug {
     if (this.hasMaximumBenefit()) {
       return this;
     }
@@ -21,7 +21,7 @@ export class Drug {
     return this;
   }
 
-  private decreaseBenefit(): Drug {
+  protected decreaseBenefit(): Drug {
     if (this.hasNoMoreBenefit()) {
       return this;
     }
@@ -29,75 +29,33 @@ export class Drug {
     return this;
   }
 
-  private expiresInLessThan(daysRemaining: number): boolean {
+  protected expiresInLessThan(daysRemaining: number): boolean {
     return this.expiresIn < daysRemaining;
   }
 
-  private hasExpired(): boolean {
+  protected hasExpired(): boolean {
     return this.expiresIn <= 0;
   }
 
   decreaseDurability(): Drug {
-    if (this.name == "Magic Pill") {
-      return this;
-    }
     this.expiresIn -= 1;
     return this;
   }
 
-  processBenefit() {
-    switch (this.name) {
-      case "Herbal Tea":
-        if (this.hasExpired()) {
-          this.increaseBenefit();
-        }
-        this.increaseBenefit();
-        break;
-      case "Doliprane":
-        if (this.hasExpired()) {
-          this.decreaseBenefit();
-        }
-        this.decreaseBenefit();
-        break;
-      case "Fervex":
-        if (this.hasExpired()) {
-          this.benefit = this.benefit - this.benefit;
-        } else {
-          this.increaseBenefit();
-          if (this.expiresInLessThan(11)) {
-            this.increaseBenefit();
-          }
-          if (this.expiresInLessThan(6)) {
-            this.increaseBenefit();
-          }
-        }
-        break;
-      case "Magic Pill":
-        return;
-      case "Dafalgan":
-        if (this.hasExpired()) {
-          this.decreaseBenefit();
-          this.decreaseBenefit();
-        }
-        this.decreaseBenefit();
-        this.decreaseBenefit();
-        break;
-      default:
-        if (this.hasExpired()) {
-          this.decreaseBenefit();
-        }
-        this.decreaseBenefit();
-        break;
+  processBenefit(): void {
+    if (this.hasExpired()) {
+      this.decreaseBenefit();
     }
+    this.decreaseBenefit();
   }
 }
 
-export class Pharmacy {
-  constructor(private drugs: Drug[] = []) {
+export class Pharmacy<T extends Drug> {
+  constructor(private drugs: T[] = []) {
     this.drugs = drugs;
   }
 
-  updateBenefitValue(): Drug[] {
+  updateBenefitValue(): T[] {
     this.drugs.forEach((drug) => {
       drug.processBenefit();
       drug.decreaseDurability();
