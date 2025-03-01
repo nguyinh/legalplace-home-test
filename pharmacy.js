@@ -42,45 +42,56 @@ export class Drug {
     this.expiresIn -= 1;
   }
 
+  processBenefit() {
+    switch (this.name) {
+      case 'Herbal Tea':
+        if (this.hasExpired()) {
+          this.increaseBenefit();
+        }
+        this.increaseBenefit();
+        break;
+      case 'Doliprane':
+        if (this.hasExpired()) {
+          this.decreaseBenefit();
+        }
+        this.decreaseBenefit();
+        break;
+      case 'Fervex':
+        if (this.hasExpired()) {
+          this.benefit = this.benefit - this.benefit;
+        } else {
+          this.increaseBenefit();
+          if (this.expiresInLessThan(11)) {
+            this.increaseBenefit();
+          }
+          if (this.expiresInLessThan(6)) {
+            this.increaseBenefit();
+          }
+        }
+        break;
+      case 'Magic Pill':
+        return;
+      default:
+        if (this.hasExpired()) {
+          this.decreaseBenefit();
+        }
+        this.decreaseBenefit();
+        break;
+    }
+  }
+
+
 }
 
 export class Pharmacy {
   constructor(drugs = []) {
     this.drugs = drugs;
   }
+
   updateBenefitValue() {
     this.drugs.forEach((drug) => {
-      if (drug.name != 'Herbal Tea' && drug.name != 'Fervex') {
-          if (drug.name != 'Magic Pill') {
-          drug.decreaseBenefit();
-        }
-      } else {
-        drug.increaseBenefit();
-          if (drug.name == 'Fervex') {
-            if (drug.expiresIn < 11) {
-            drug.increaseBenefit();
-            }
-            if (drug.expiresIn < 6) {
-            drug.increaseBenefit();
-          }
-        }
-      }
-      if (drug.name != 'Magic Pill') {
-        drug.expiresIn = drug.expiresIn - 1;
-      }
-      if (drug.expiresIn < 0) {
-        if (drug.name != 'Herbal Tea') {
-          if (drug.name != 'Fervex') {
-              if (drug.name != 'Magic Pill') {
-              drug.decreaseBenefit();
-            }
-          } else {
-            drug.benefit = drug.benefit - drug.benefit;
-          }
-        } else {
-          drug.increaseBenefit();
-        }
-      }
+      drug.processBenefit();
+      drug.decreaseDurability();
     });
 
     return this.drugs;
