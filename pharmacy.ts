@@ -1,62 +1,65 @@
 export class Drug {
-  constructor(name, expiresIn, benefit) {
-    this.name = name;
-    this.expiresIn = expiresIn;
-    this.benefit = benefit;
-  }
+  constructor(
+    private name: string,
+    private expiresIn: number,
+    private benefit: number
+  ) {}
 
-  hasNoMoreBenefit() {
+  private hasNoMoreBenefit(): boolean {
     return this.benefit <= 0;
   }
 
-  hasMaximumBenefit() {
+  private hasMaximumBenefit(): boolean {
     return this.benefit >= 50;
   }
 
-  increaseBenefit() {
+  private increaseBenefit(): Drug {
     if (this.hasMaximumBenefit()) {
-      return;
+      return this;
     }
     this.benefit += 1;
+    return this;
   }
 
-  decreaseBenefit() {
+  private decreaseBenefit(): Drug {
     if (this.hasNoMoreBenefit()) {
-      return;
+      return this;
     }
     this.benefit -= 1;
+    return this;
   }
 
-  expiresInLessThan(daysRemaining) {
+  private expiresInLessThan(daysRemaining: number): boolean {
     return this.expiresIn < daysRemaining;
   }
 
-  hasExpired() {
+  private hasExpired(): boolean {
     return this.expiresIn <= 0;
   }
 
-  decreaseDurability() {
-    if (this.name == 'Magic Pill') {
-      return;
+  decreaseDurability(): Drug {
+    if (this.name == "Magic Pill") {
+      return this;
     }
     this.expiresIn -= 1;
+    return this;
   }
 
   processBenefit() {
     switch (this.name) {
-      case 'Herbal Tea':
+      case "Herbal Tea":
         if (this.hasExpired()) {
           this.increaseBenefit();
         }
         this.increaseBenefit();
         break;
-      case 'Doliprane':
+      case "Doliprane":
         if (this.hasExpired()) {
           this.decreaseBenefit();
         }
         this.decreaseBenefit();
         break;
-      case 'Fervex':
+      case "Fervex":
         if (this.hasExpired()) {
           this.benefit = this.benefit - this.benefit;
         } else {
@@ -69,9 +72,9 @@ export class Drug {
           }
         }
         break;
-      case 'Magic Pill':
+      case "Magic Pill":
         return;
-      case 'Dafalgan':
+      case "Dafalgan":
         if (this.hasExpired()) {
           this.decreaseBenefit();
           this.decreaseBenefit();
@@ -87,16 +90,14 @@ export class Drug {
         break;
     }
   }
-
-
 }
 
 export class Pharmacy {
-  constructor(drugs = []) {
+  constructor(private drugs: Drug[] = []) {
     this.drugs = drugs;
   }
 
-  updateBenefitValue() {
+  updateBenefitValue(): Drug[] {
     this.drugs.forEach((drug) => {
       drug.processBenefit();
       drug.decreaseDurability();
