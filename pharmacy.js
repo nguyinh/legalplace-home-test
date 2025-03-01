@@ -71,6 +71,14 @@ export class Drug {
         break;
       case 'Magic Pill':
         return;
+      case 'Dafalgan':
+        if (this.hasExpired()) {
+          this.decreaseBenefit();
+          this.decreaseBenefit();
+        }
+        this.decreaseBenefit();
+        this.decreaseBenefit();
+        break;
       default:
         if (this.hasExpired()) {
           this.decreaseBenefit();
