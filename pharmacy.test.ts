@@ -1,15 +1,20 @@
+import { Dafalgan } from "./drugs/Dafalgan";
+import { Doliprane } from "./drugs/Doliprane";
+import { Fervex } from "./drugs/Fervex";
+import { HerbalTea } from "./drugs/HerbalTea";
+import { MagicPill } from "./drugs/MagicPill";
 import { Drug, Pharmacy } from "./pharmacy";
 
 describe("Pharmacy", () => {
   it("should decrease the benefit and expiresIn", () => {
-    expect(new Pharmacy([new Drug("test", 2, 3)]).updateBenefitValue()).toEqual(
-      [new Drug("test", 1, 2)]
+    expect(new Pharmacy([new Drug(2, 3, "test")]).updateBenefitValue()).toEqual(
+      [new Drug(1, 2, "test")]
     );
   });
 });
 
 describe("Magic Pill", () => {
-  const magicPill = new Drug("Magic Pill", 2, 3);
+  const magicPill = new MagicPill(2, 3);
   magicPill.processBenefit();
   magicPill.decreaseDurability();
 
@@ -26,7 +31,7 @@ describe("Magic Pill", () => {
 
 describe("Doliprane", () => {
   it("should decrease benefit when expiration is not reached", () => {
-    const doliprane = new Drug("Doliprane", 2, 3);
+    const doliprane = new Doliprane(2, 3);
     doliprane.processBenefit();
     doliprane.decreaseDurability();
 
@@ -35,7 +40,7 @@ describe("Doliprane", () => {
     expect(doliprane.benefit).toEqual(2);
   });
   it("should decrease benefit twice when expiration is reached", () => {
-    const doliprane = new Drug("Doliprane", -1, 3);
+    const doliprane = new Doliprane(-1, 3);
     doliprane.processBenefit();
     doliprane.decreaseDurability();
 
@@ -47,7 +52,7 @@ describe("Doliprane", () => {
 
 describe("Herbal Tea", () => {
   it("should increase benefit when expiration is not reached", () => {
-    const herbalTea = new Drug("Herbal Tea", 2, 3);
+    const herbalTea = new HerbalTea(2, 3);
     herbalTea.processBenefit();
     herbalTea.decreaseDurability();
 
@@ -56,7 +61,7 @@ describe("Herbal Tea", () => {
     expect(herbalTea.benefit).toEqual(4);
   });
   it("should decrease benefit twice when expiration is reached", () => {
-    const herbalTea = new Drug("Herbal Tea", -1, 3);
+    const herbalTea = new HerbalTea(-1, 3);
     herbalTea.processBenefit();
     herbalTea.decreaseDurability();
 
@@ -68,7 +73,7 @@ describe("Herbal Tea", () => {
 
 describe("Dafalgan", () => {
   it("should decrease benefit twice when expiration is not reached", () => {
-    const dafalgan = new Drug("Dafalgan", 2, 3);
+    const dafalgan = new Dafalgan(2, 3);
     dafalgan.processBenefit();
     dafalgan.decreaseDurability();
 
@@ -77,7 +82,7 @@ describe("Dafalgan", () => {
     expect(dafalgan.benefit).toEqual(1);
   });
   it("should decrease benefit 4 times twice when expiration is reached", () => {
-    const dafalgan = new Drug("Dafalgan", -1, 7);
+    const dafalgan = new Dafalgan(-1, 7);
     dafalgan.processBenefit();
     dafalgan.decreaseDurability();
 
@@ -89,7 +94,7 @@ describe("Dafalgan", () => {
 
 describe("Fervex", () => {
   it("should increase in benefit once when expiration is above 10 days", () => {
-    const fervex = new Drug("Fervex", 12, 3);
+    const fervex = new Fervex(12, 3);
     fervex.processBenefit();
     fervex.decreaseDurability();
 
@@ -98,7 +103,7 @@ describe("Fervex", () => {
     expect(fervex.benefit).toEqual(4);
   });
   it("should increase in benefit twice when expiration is below 10 days", () => {
-    const fervex = new Drug("Fervex", 9, 3);
+    const fervex = new Fervex(9, 3);
     fervex.processBenefit();
     fervex.decreaseDurability();
 
@@ -107,7 +112,7 @@ describe("Fervex", () => {
     expect(fervex.benefit).toEqual(5);
   });
   it("should increase in benefit 3 times when expiration is below 5 days", () => {
-    const fervex = new Drug("Fervex", 2, 3);
+    const fervex = new Fervex(2, 3);
     fervex.processBenefit();
     fervex.decreaseDurability();
 
@@ -116,7 +121,7 @@ describe("Fervex", () => {
     expect(fervex.benefit).toEqual(6);
   });
   it("should lose all benefit if expiration has passed", () => {
-    const fervex = new Drug("Fervex", -1, 9);
+    const fervex = new Fervex(-1, 9);
     fervex.processBenefit();
     fervex.decreaseDurability();
 
@@ -128,7 +133,7 @@ describe("Fervex", () => {
 
 describe("Random drug", () => {
   it("should decrease benefit when expiration is not reached", () => {
-    const ultraGeneric3000 = new Drug("UltraGeneric3000", 2, 3);
+    const ultraGeneric3000 = new Drug(2, 3, "UltraGeneric3000");
     ultraGeneric3000.processBenefit();
     ultraGeneric3000.decreaseDurability();
 
@@ -137,7 +142,7 @@ describe("Random drug", () => {
     expect(ultraGeneric3000.benefit).toEqual(2);
   });
   it("should decrease benefit twice when expiration is reached", () => {
-    const ultraGeneric3000 = new Drug("UltraGeneric3000", -1, 3);
+    const ultraGeneric3000 = new Drug(-1, 3, "UltraGeneric3000");
     ultraGeneric3000.processBenefit();
     ultraGeneric3000.decreaseDurability();
 
