@@ -35,25 +35,17 @@ export class Pharmacy {
   updateBenefitValue() {
     this.drugs.forEach((drug) => {
       if (drug.name != 'Herbal Tea' && drug.name != 'Fervex') {
-        if (drug.benefit > 0) {
           if (drug.name != 'Magic Pill') {
-            drug.benefit = drug.benefit - 1;
-          }
+          drug.decreaseBenefit();
         }
       } else {
-        if (drug.benefit < 50) {
-          drug.benefit = drug.benefit + 1;
+        drug.increaseBenefit();
           if (drug.name == 'Fervex') {
             if (drug.expiresIn < 11) {
-              if (drug.benefit < 50) {
-                drug.benefit = drug.benefit + 1;
-              }
+            drug.increaseBenefit();
             }
             if (drug.expiresIn < 6) {
-              if (drug.benefit < 50) {
-                drug.benefit = drug.benefit + 1;
-              }
-            }
+            drug.increaseBenefit();
           }
         }
       }
@@ -63,18 +55,14 @@ export class Pharmacy {
       if (drug.expiresIn < 0) {
         if (drug.name != 'Herbal Tea') {
           if (drug.name != 'Fervex') {
-            if (drug.benefit > 0) {
               if (drug.name != 'Magic Pill') {
-                drug.benefit = drug.benefit - 1;
-              }
+              drug.decreaseBenefit();
             }
           } else {
             drug.benefit = drug.benefit - drug.benefit;
           }
         } else {
-          if (drug.benefit < 50) {
-            drug.benefit = drug.benefit + 1;
-          }
+          drug.increaseBenefit();
         }
       }
     });
