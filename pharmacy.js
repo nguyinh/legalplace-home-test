@@ -26,6 +26,22 @@ export class Drug {
     }
     this.benefit -= 1;
   }
+
+  expiresInLessThan(daysRemaining) {
+    return this.expiresIn < daysRemaining;
+  }
+
+  hasExpired() {
+    return this.expiresIn <= 0;
+  }
+
+  decreaseDurability() {
+    if (this.name == 'Magic Pill') {
+      return;
+    }
+    this.expiresIn -= 1;
+  }
+
 }
 
 export class Pharmacy {
